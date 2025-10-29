@@ -127,6 +127,37 @@ soul-trip-tours/
 └── README.md             # This file
 ```
 
+## 🚀 Deployment
+
+**Important:** This is a full-stack Node.js application that requires a server to run. It cannot be deployed as a static site on GitHub Pages.
+
+### Recommended Hosting Platforms:
+
+#### **Free Options:**
+- **Railway** - https://railway.app (Easiest deployment)
+- **Render** - https://render.com (Free tier available)
+- **Cyclic** - https://cyclic.sh (Simple Node.js hosting)
+
+#### **Paid Options:**
+- **Heroku** - https://heroku.com (Professional hosting)
+- **DigitalOcean App Platform** - https://digitalocean.com
+- **AWS Elastic Beanstalk** - https://aws.amazon.com
+
+### Quick Deploy to Railway:
+1. Connect your GitHub repository to Railway
+2. Set environment variables from `.env.example`
+3. Railway will automatically detect and deploy your Node.js app
+
+### Environment Variables Required:
+```bash
+DATABASE_URL=your_mysql_connection_string
+EMAIL_HOST=smtp.gmail.com
+EMAIL_USER=your_email
+EMAIL_PASS=your_app_password
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=your_secure_password
+```
+
 ## Configuration
 
 ### Email Setup
