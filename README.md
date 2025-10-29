@@ -133,11 +133,7 @@ soul-trip-tours/
 
 The website uses Nodemailer for sending contact form and booking emails. Configure your email settings in the `.env` file:
 
-```
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
+``
 ```
 
 For Gmail, you'll need to:
@@ -240,8 +236,8 @@ This project is licensed under the MIT License.
 
 For support or questions:
 
-- Email: info@soultriptours.com
-- Phone: +1 (555) 123-4567
+- Email: soultripst@gmail.com
+- Phone: +880 1616-578097
 
 ## Acknowledgments
 
