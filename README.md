@@ -195,7 +195,7 @@ Tours are currently stored in the `server.js` file as sample data. To add new to
 2. Include all required fields: title, destination, duration, price, image, category, description, highlights, route
 3. Restart the server
 
-For production, consider moving tour data to a database.
+For complete database setup and production deployment, see [DATABASE_SETUP.md](./DATABASE_SETUP.md).
 
 ### Styling
 
@@ -218,21 +218,40 @@ To add new pages:
 2. Add a route handler in `server.js`
 3. Update navigation in `views/partials/header.ejs`
 
+## 🗄️ Database
+
+This project uses MySQL database for storing tours, bookings, contacts, and other dynamic content. 
+
+**Quick Start:**
+1. Import the complete database: `mysql -u root -p soultrip < soultrip.sql`
+2. Configure your database credentials in `.env`
+
+**📘 For detailed setup instructions, see [DATABASE_SETUP.md](./DATABASE_SETUP.md)**
+
 ## Deployment
 
-### Production Setup
+### 🚀 For Production Hosting
+
+**📘 Complete deployment guide: [DATABASE_SETUP.md](./DATABASE_SETUP.md)**
+
+### Quick Production Setup
 
 1. Set `NODE_ENV=production` in your environment
-2. Configure your production email settings
-3. Set up a reverse proxy (nginx recommended)
-4. Use a process manager like PM2
-5. Set up SSL certificates
+2. Import the database using `soultrip.sql`
+3. Configure your production email settings
+4. Set up a reverse proxy (nginx recommended)
+5. Use a process manager like PM2
+6. Set up SSL certificates
 
-### Recommended Hosting
+### 🌟 Recommended Hosting Platforms
 
-- **VPS**: DigitalOcean, Linode, or similar
-- **Platform**: Railway, Render, or Heroku
-- **Static Assets**: Consider using a CDN for images
+- **🚅 Railway**: Excellent for Node.js + MySQL (recommended)
+- **🎨 Render**: Great for web services with database
+- **⚡ Heroku**: Classic platform with MySQL add-ons
+- **🌊 DigitalOcean**: VPS with managed databases
+- **🔧 Linode**: Custom VPS setup
+
+**Note:** This is a full-stack Node.js application with MySQL database. Static site hosts (like GitHub Pages, Netlify, Vercel) cannot run this project as they don't support server-side code or databases.
 
 ## Security Considerations
 
