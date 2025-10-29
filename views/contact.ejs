@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Soul Trip Tours and Travels</title>
+    <meta
+      name="description"
+      content="Get in touch with Soul Trip Tours and Travels. Contact us for bookings, inquiries, or custom travel planning."
+    />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-96 bg-cover bg-center"
+      style="
+        background-image: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.3)
+          ),
+          url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+      ></div>
+      <div class="relative container-custom h-full flex items-center">
+        <div class="text-white">
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4 text-shadow-lg">
+            Contact Us
+          </h1>
+          <p class="text-xl text-gray-200 text-shadow">
+            Let's plan your next adventure together
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section-padding bg-white">
+      <div class="container-custom">
+        <!-- Success/Error Messages -->
+        <% if (typeof success !== 'undefined' && success) { %>
+        <div
+          class="mb-8 p-6 bg-green-50 border-l-4 border-green-400 rounded-lg shadow-sm"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-check-circle text-green-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-green-800 font-semibold text-lg">
+                Message sent successfully!
+              </h3>
+              <p class="text-green-700 mt-1">
+                Thank you for contacting Soul Trip Tours! We've received your
+                inquiry and will get back to you within 24 hours. Check your
+                email for a confirmation message.
+              </p>
+            </div>
+          </div>
+        </div>
+        <% } %> <% if (typeof error !== 'undefined' && error) { %>
+        <div
+          class="mb-8 p-6 bg-red-50 border-l-4 border-red-400 rounded-lg shadow-sm"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-red-800 font-semibold text-lg">
+                Message failed to send
+              </h3>
+              <p class="text-red-700 mt-1">
+                We're sorry, but there was an error sending your message. Please
+                try again or contact us directly at
+                <strong>soultripst@gmail.com</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Contact Form -->
+          <div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+            <p class="text-gray-600 mb-8">
+              Ready to embark on your next adventure? Fill out the form below
+              and our travel experts will get back to you within 24 hours to
+              help plan your perfect trip.
+            </p>
+
+            <form
+              id="contactForm"
+              method="POST"
+              action="/contact"
+              class="space-y-6"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Full Name *</label
+                  >
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Email *</label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  name="phone"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Subject *</label
+                >
+                <select
+                  name="subject"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="">Select a subject</option>
+                  <option value="General Information">
+                    General Information
+                  </option>
+                  <option value="Tour Booking">Tour Booking</option>
+                  <option value="Custom Trip Planning">
+                    Custom Trip Planning
+                  </option>
+                  <option value="Group Travel">Group Travel</option>
+                  <option value="Pricing Inquiry">Pricing Inquiry</option>
+                  <option value="Travel Advice">Travel Advice</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Message *</label
+                >
+                <textarea
+                  name="message"
+                  rows="5"
+                  required
+                  placeholder="Tell us about your dream trip, preferred destinations, travel dates, group size, or any questions you have..."
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                ></textarea>
+              </div>
+
+              <div class="flex items-center">
+                <input
+                  type="checkbox"
+                  id="newsletter"
+                  name="newsletter"
+                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label for="newsletter" class="ml-2 text-sm text-gray-600">
+                  Subscribe to our newsletter for travel tips and special offers
+                </label>
+              </div>
+
+              <button type="submit" class="w-full btn-primary text-lg py-4">
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          <!-- Contact Information -->
+          <div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">
+              Contact Information
+            </h2>
+
+            <div class="space-y-6 mb-8">
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-map-marker-alt text-primary-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                    Address
+                  </h3>
+                  <p class="text-gray-600">
+                    <%= settings.contact_address || 'Green City Regency, 26-27 kakrail, Level-11, Dhaka-1000, Bangladesh' %>
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-phone text-primary-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                    Phone
+                  </h3>
+                  <p class="text-gray-600">
+                    <a
+                      href="tel:<%= settings.contact_phone || '+880 1616-578097' %>"
+                      class="hover:text-primary-600"
+                      ><%= settings.contact_phone || '+880 1616-578097' %></a
+                    ><br />
+                    <span class="text-sm"
+                      ><%= settings.business_hours || 'Saturday-Thursday: 9:00 AM - 6:00 PM, Friday: Closed' %></span
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-envelope text-primary-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                    Email
+                  </h3>
+                  <p class="text-gray-600">
+                    <a
+                      href="mailto:<%= settings.contact_email || 'soultripst@gmail.com' %>"
+                      class="hover:text-primary-600"
+                      ><%= settings.contact_email || 'soultripst@gmail.com' %></a
+                    ><br />
+                    <a
+                      href="mailto:<%= settings.contact_email || 'soultripst@gmail.com' %>"
+                      class="hover:text-primary-600"
+                      ><%= settings.contact_email || 'soultripst@gmail.com' %></a
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-clock text-primary-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                    Office Hours
+                  </h3>
+                  <p class="text-gray-600">
+                    <%= settings.business_hours || 'Saturday-Thursday: 9:00 AM - 6:00 PM, Friday: Closed' %>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="border-t pt-8">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                Follow Us
+              </h3>
+              <div class="flex space-x-4">
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors duration-200"
+                >
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors duration-200"
+                >
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors duration-200"
+                >
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors duration-200"
+                >
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Emergency Contact -->
+            <div class="mt-8 p-6 bg-accent-50 rounded-lg">
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                Emergency Contact
+              </h3>
+              <p class="text-gray-600 text-sm mb-2">
+                For travelers currently on tour with emergency needs:
+              </p>
+              <p class="font-semibold text-accent-600">
+                <i class="fas fa-phone mr-2"></i>
+                +880 1616-578097-HELP (24/7)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section-padding bg-gray-50">
+      <div class="container-custom">
+        <div class="max-w-3xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p class="text-xl text-gray-600">
+              Quick answers to common questions
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="bg-white rounded-lg shadow-sm">
+              <button
+                class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                onclick="toggleFAQ(0)"
+              >
+                <span class="font-semibold text-gray-900"
+                  >How far in advance should I book my trip?</span
+                >
+                <i
+                  class="fas fa-chevron-down text-gray-500 transition-transform duration-200"
+                  id="faq-icon-0"
+                ></i>
+              </button>
+              <div class="hidden px-6 pb-4" id="faq-content-0">
+                <p class="text-gray-600">
+                  We recommend booking 3-6 months in advance for popular
+                  destinations and peak seasons. However, we can often
+                  accommodate last-minute bookings depending on availability.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm">
+              <button
+                class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                onclick="toggleFAQ(1)"
+              >
+                <span class="font-semibold text-gray-900"
+                  >What is included in the tour price?</span
+                >
+                <i
+                  class="fas fa-chevron-down text-gray-500 transition-transform duration-200"
+                  id="faq-icon-1"
+                ></i>
+              </button>
+              <div class="hidden px-6 pb-4" id="faq-content-1">
+                <p class="text-gray-600">
+                  Tour prices typically include accommodation, transportation,
+                  expert guides, entrance fees, and some meals. Specific
+                  inclusions vary by tour - check the tour details page for
+                  complete information.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm">
+              <button
+                class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                onclick="toggleFAQ(2)"
+              >
+                <span class="font-semibold text-gray-900"
+                  >Do you offer customized private tours?</span
+                >
+                <i
+                  class="fas fa-chevron-down text-gray-500 transition-transform duration-200"
+                  id="faq-icon-2"
+                ></i>
+              </button>
+              <div class="hidden px-6 pb-4" id="faq-content-2">
+                <p class="text-gray-600">
+                  Yes! We specialize in creating custom itineraries tailored to
+                  your interests, budget, and schedule. Contact us to discuss
+                  your dream trip and we'll make it happen.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm">
+              <button
+                class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                onclick="toggleFAQ(3)"
+              >
+                <span class="font-semibold text-gray-900"
+                  >What is your cancellation policy?</span
+                >
+                <i
+                  class="fas fa-chevron-down text-gray-500 transition-transform duration-200"
+                  id="faq-icon-3"
+                ></i>
+              </button>
+              <div class="hidden px-6 pb-4" id="faq-content-3">
+                <p class="text-gray-600">
+                  We offer free cancellation up to 30 days before departure for
+                  most tours. Cancellations within 30 days may incur fees.
+                  Travel insurance is recommended for added protection.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-btn")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          mobileMenu.classList.toggle("hidden");
+        });
+
+      // FAQ Toggle
+      function toggleFAQ(index) {
+        const content = document.getElementById(`faq-content-${index}`);
+        const icon = document.getElementById(`faq-icon-${index}`);
+
+        content.classList.toggle("hidden");
+        icon.classList.toggle("fa-chevron-down");
+        icon.classList.toggle("fa-chevron-up");
+      }
+
+      // Contact form submission - Let server handle the submission
+      // Form will submit normally and server will redirect with success/error messages
+    </script>
+  </body>
+</html>

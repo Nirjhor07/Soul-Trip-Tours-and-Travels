@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics - Admin Dashboard</title>
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .admin-sidebar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: transform 0.3s ease;
+      }
+      .stats-card:hover {
+        transform: translateY(-2px);
+      }
+      .chart-container {
+        position: relative;
+        height: 350px;
+        width: 100%;
+      }
+      .analytics-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+      }
+      .analytics-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .card-blue {
+        border-left-color: #3b82f6;
+      }
+      .card-green {
+        border-left-color: #10b981;
+      }
+      .card-purple {
+        border-left-color: #8b5cf6;
+      }
+      .card-orange {
+        border-left-color: #f59e0b;
+      }
+      .card-red {
+        border-left-color: #ef4444;
+      }
+      .card-indigo {
+        border-left-color: #6366f1;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <div class="admin-sidebar w-64 shadow-xl">
+        <div class="p-6">
+          <div class="flex items-center space-x-3 mb-8">
+            <div
+              class="w-10 h-10 bg-white rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-user-shield text-purple-600 text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-white font-bold text-lg">Admin Panel</h2>
+              <p class="text-purple-200 text-sm">Soul Trip Tours</p>
+            </div>
+          </div>
+
+          <nav class="space-y-2">
+            <a
+              href="/admin/dashboard"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+            <a
+              href="/admin/tours"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-map-marked-alt"></i>
+              <span>Manage Tours</span>
+            </a>
+            <a
+              href="/admin/bookings"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-calendar-check"></i>
+              <span>Bookings</span>
+            </a>
+            <a
+              href="/admin/contacts"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-envelope"></i>
+              <span>Contact Inquiries</span>
+            </a>
+            <a
+              href="/admin/settings"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+            <a
+              href="/admin/analytics"
+              class="flex items-center space-x-3 text-white bg-white bg-opacity-20 rounded-lg px-4 py-3 font-medium"
+            >
+              <i class="fas fa-chart-line"></i>
+              <span>Analytics</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1">
+        <!-- Header -->
+        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">
+                Analytics Dashboard
+              </h1>
+              <p class="text-gray-600">
+                Track your website performance and customer insights
+              </p>
+            </div>
+            <div class="flex space-x-3">
+              <select
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+                <option>This year</option>
+              </select>
+              <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                <i class="fas fa-download mr-2"></i>Export Report
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <!-- Key Metrics -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <div class="stats-card text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-blue-100 text-sm">Total Revenue</p>
+                  <p class="text-2xl font-bold">$45,892</p>
+                  <p class="text-blue-200 text-xs mt-1">+12% from last month</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                  <i class="fas fa-dollar-sign text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-blue-100 text-sm">Total Bookings</p>
+                  <p class="text-2xl font-bold">1,234</p>
+                  <p class="text-blue-200 text-xs mt-1">+8% from last month</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                  <i class="fas fa-calendar-check text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-blue-100 text-sm">Website Visitors</p>
+                  <p class="text-2xl font-bold">8,942</p>
+                  <p class="text-blue-200 text-xs mt-1">+15% from last month</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                  <i class="fas fa-users text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-blue-100 text-sm">Conversion Rate</p>
+                  <p class="text-2xl font-bold">13.8%</p>
+                  <p class="text-blue-200 text-xs mt-1">
+                    +2.1% from last month
+                  </p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                  <i class="fas fa-chart-line text-xl"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row 1 -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Revenue Chart -->
+            <div
+              class="analytics-card card-blue bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-chart-area mr-2 text-blue-600"></i>Revenue
+                  Trend
+                </h3>
+                <div class="text-sm text-gray-500">Last 6 months</div>
+              </div>
+              <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Bookings Chart -->
+            <div
+              class="analytics-card card-green bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-chart-bar mr-2 text-green-600"></i>Monthly
+                  Bookings
+                </h3>
+                <div class="text-sm text-gray-500">This year</div>
+              </div>
+              <div class="chart-container">
+                <canvas id="bookingsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row 2 -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Popular Tours -->
+            <div
+              class="analytics-card card-purple bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-star mr-2 text-purple-600"></i>Popular Tours
+                </h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="popularToursChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Traffic Sources -->
+            <div
+              class="analytics-card card-orange bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-globe mr-2 text-orange-600"></i>Traffic
+                  Sources
+                </h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="trafficSourcesChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Customer Demographics -->
+            <div
+              class="analytics-card card-indigo bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-user-friends mr-2 text-indigo-600"></i
+                  >Customer Age Groups
+                </h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="demographicsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Metrics -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Top Performing Tours -->
+            <div
+              class="analytics-card card-green bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-trophy mr-2 text-green-600"></i>Top
+                  Performing Tours
+                </h3>
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >View All</a
+                >
+              </div>
+              <div class="space-y-4">
+                <div
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="font-medium">Himalayan Adventure</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-semibold text-green-600">156 bookings</div>
+                    <div class="text-sm text-gray-500">$23,400 revenue</div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span class="font-medium">Bali Beach Paradise</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-semibold text-blue-600">134 bookings</div>
+                    <div class="text-sm text-gray-500">$20,100 revenue</div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span class="font-medium">Swiss Alps Trek</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-semibold text-purple-600">
+                      112 bookings
+                    </div>
+                    <div class="text-sm text-gray-500">$16,800 revenue</div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span class="font-medium">Tokyo Cultural Tour</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-semibold text-orange-600">98 bookings</div>
+                    <div class="text-sm text-gray-500">$14,700 revenue</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div
+              class="analytics-card card-red bg-white rounded-xl shadow-lg p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <i class="fas fa-clock mr-2 text-red-600"></i>Recent Activity
+                </h3>
+                <a
+                  href="#"
+                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >View All</a
+                >
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div class="flex-1">
+                    <p class="text-sm">
+                      <strong>New booking</strong> for Himalayan Adventure
+                    </p>
+                    <p class="text-xs text-gray-500">2 minutes ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div class="flex-1">
+                    <p class="text-sm">
+                      <strong>Contact inquiry</strong> received
+                    </p>
+                    <p class="text-xs text-gray-500">15 minutes ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                  <div class="flex-1">
+                    <p class="text-sm"><strong>New user</strong> registered</p>
+                    <p class="text-xs text-gray-500">1 hour ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                  <div class="flex-1">
+                    <p class="text-sm">
+                      <strong>Tour updated</strong> - Swiss Alps Trek
+                    </p>
+                    <p class="text-xs text-gray-500">3 hours ago</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+                  <div class="flex-1">
+                    <p class="text-sm">
+                      <strong>Booking cancelled</strong> - Bali Beach Paradise
+                    </p>
+                    <p class="text-xs text-gray-500">5 hours ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sample data for charts
+      const chartColors = {
+        primary: "#3b82f6",
+        secondary: "#10b981",
+        accent: "#8b5cf6",
+        warning: "#f59e0b",
+        danger: "#ef4444",
+        info: "#6366f1",
+      };
+
+      // Revenue Chart
+      const revenueCtx = document
+        .getElementById("revenueChart")
+        .getContext("2d");
+      new Chart(revenueCtx, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Revenue ($)",
+              data: [12000, 15500, 18200, 16800, 22100, 25400],
+              borderColor: chartColors.primary,
+              backgroundColor: chartColors.primary + "20",
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return "$" + value.toLocaleString();
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // Bookings Chart
+      const bookingsCtx = document
+        .getElementById("bookingsChart")
+        .getContext("2d");
+      new Chart(bookingsCtx, {
+        type: "bar",
+        data: {
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          datasets: [
+            {
+              label: "Bookings",
+              data: [85, 92, 108, 95, 125, 140, 156, 145, 132, 118, 95, 78],
+              backgroundColor: chartColors.secondary,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // Popular Tours Chart
+      const popularToursCtx = document
+        .getElementById("popularToursChart")
+        .getContext("2d");
+      new Chart(popularToursCtx, {
+        type: "doughnut",
+        data: {
+          labels: [
+            "Himalayan Adventure",
+            "Bali Beach",
+            "Swiss Alps",
+            "Tokyo Tour",
+            "Others",
+          ],
+          datasets: [
+            {
+              data: [156, 134, 112, 98, 145],
+              backgroundColor: [
+                chartColors.primary,
+                chartColors.secondary,
+                chartColors.accent,
+                chartColors.warning,
+                chartColors.info,
+              ],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                usePointStyle: true,
+                padding: 15,
+              },
+            },
+          },
+        },
+      });
+
+      // Traffic Sources Chart
+      const trafficSourcesCtx = document
+        .getElementById("trafficSourcesChart")
+        .getContext("2d");
+      new Chart(trafficSourcesCtx, {
+        type: "pie",
+        data: {
+          labels: ["Direct", "Search", "Social Media", "Referral", "Email"],
+          datasets: [
+            {
+              data: [35, 28, 18, 12, 7],
+              backgroundColor: [
+                chartColors.primary,
+                chartColors.secondary,
+                chartColors.accent,
+                chartColors.warning,
+                chartColors.danger,
+              ],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                usePointStyle: true,
+                padding: 15,
+              },
+            },
+          },
+        },
+      });
+
+      // Demographics Chart
+      const demographicsCtx = document
+        .getElementById("demographicsChart")
+        .getContext("2d");
+      new Chart(demographicsCtx, {
+        type: "bar",
+        data: {
+          labels: ["18-25", "26-35", "36-45", "46-55", "56+"],
+          datasets: [
+            {
+              label: "Customers",
+              data: [125, 285, 195, 145, 85],
+              backgroundColor: chartColors.info,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // Export report functionality
+      document
+        .querySelector('button[class*="bg-blue-600"]')
+        .addEventListener("click", function () {
+          alert(
+            "Report exported successfully! (This is a demo - in production, this would generate and download a detailed analytics report)"
+          );
+        });
+    </script>
+  </body>
+</html>

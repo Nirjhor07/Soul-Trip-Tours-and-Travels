@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= action === 'add' ? 'Add New Tour' : 'Edit Tour' %> - Admin Dashboard</title>
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Image upload specific styles */
+        .upload-area {
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background-color: #f8fafc;
+        }
+        .upload-button {
+            transition: all 0.2s ease;
+        }
+        .upload-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .image-preview-container {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 640px) {
+            .form-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            .upload-area {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="admin-sidebar w-64 shadow-xl">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-shield text-purple-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-white font-bold text-lg">Admin Panel</h2>
+                        <p class="text-purple-200 text-sm">Soul Trip Tours</p>
+                    </div>
+                </div>
+                
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/tours" class="flex items-center space-x-3 text-white bg-white bg-opacity-20 rounded-lg px-4 py-3 font-medium">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Manage Tours</span>
+                    </a>
+                    <a href="/admin/bookings" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                    </a>
+                    <a href="/admin/contacts" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact Inquiries</span>
+                    </a>
+                    <a href="/admin/settings" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="/admin/analytics" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1">
+            <!-- Header -->
+            <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">
+                            <%= action === 'add' ? 'Add New Tour' : 'Edit Tour' %>
+                        </h1>
+                        <p class="text-gray-600">
+                            <%= action === 'add' ? 'Create a new tour package' : 'Update tour information' %>
+                        </p>
+                    </div>
+                    <a href="/admin/tours" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Tours
+                    </a>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="p-8">
+                            <form id="tour-form" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Tour Title *</label>
+                                        <input type="text" id="title" class="form-input" value="<%= tour ? tour.title : '' %>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Category *</label>
+                                        <select id="category_id" class="form-input" required>
+                                            <option value="">Select Category</option>
+                                            <option value="1" <%= tour && tour.category_id == 1 ? 'selected' : '' %>>Adventure</option>
+                                            <option value="2" <%= tour && tour.category_id == 2 ? 'selected' : '' %>>Cultural</option>
+                                            <option value="3" <%= tour && tour.category_id == 3 ? 'selected' : '' %>>Nature</option>
+                                            <option value="4" <%= tour && tour.category_id == 4 ? 'selected' : '' %>>Spiritual</option>
+                                            <option value="5" <%= tour && tour.category_id == 5 ? 'selected' : '' %>>Luxury</option>
+                                            <option value="6" <%= tour && tour.category_id == 6 ? 'selected' : '' %>>Budget</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Description *</label>
+                                    <textarea id="description" rows="4" class="form-input" required><%= tour ? tour.description : '' %></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Price (USD) *</label>
+                                        <input type="number" id="price" class="form-input" value="<%= tour ? tour.price : '' %>" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Duration *</label>
+                                        <input type="text" id="duration" class="form-input" value="<%= tour ? tour.duration : '' %>" placeholder="e.g., 7 days" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Location *</label>
+                                        <input type="text" id="destination" class="form-input" value="<%= tour ? tour.destination : '' %>" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Tour Image</label>
+                                    <div class="space-y-4">
+                                        <!-- Image Preview -->
+                                        <div id="image-preview-container" class="hidden image-preview-container">
+                                            <div class="relative inline-block">
+                                                <img id="image-preview" src="" alt="Tour image preview" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-300">
+                                                <button type="button" onclick="removeImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 transition-colors">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Upload Options -->
+                                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 upload-area">
+                                            <div class="text-center">
+                                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                                <h3 class="text-lg font-medium text-gray-900 mb-2">Upload Tour Image</h3>
+                                                <p class="text-gray-600 mb-4">Choose to upload a file or provide an image URL</p>
+                                                
+                                                <!-- File Upload -->
+                                                <div class="space-y-4">
+                                                    <div>
+                                                        <input type="file" id="image-file" accept="image/*" class="hidden" onchange="handleFileUpload(this)">
+                                                        <label for="image-file" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg cursor-pointer font-medium transition-colors inline-flex items-center upload-button">
+                                                            <i class="fas fa-upload mr-2"></i>Upload from Device
+                                                        </label>
+                                                        <p class="text-sm text-gray-500 mt-2">Supports: JPEG, PNG, GIF, WebP (Max 5MB)</p>
+                                                    </div>
+                                                    
+                                                    <div class="relative">
+                                                        <div class="absolute inset-0 flex items-center">
+                                                            <div class="w-full border-t border-gray-300"></div>
+                                                        </div>
+                                                        <div class="relative flex justify-center text-sm">
+                                                            <span class="px-2 bg-white text-gray-500">OR</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- URL Input -->
+                                                    <div>
+                                                        <input type="url" id="image-url" class="form-input" placeholder="https://example.com/image.jpg" onchange="handleUrlInput(this)">
+                                                        <p class="text-sm text-gray-500 mt-1">Enter an image URL</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hidden input for form submission -->
+                                        <input type="hidden" id="image" value="<%= tour ? tour.image : '' %>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Tour Highlights</label>
+                                    <div id="highlights-container">
+                                        <% if (tour && tour.highlights) { %>
+                                            <% tour.highlights.forEach(highlight => { %>
+                                                <div class="highlight-item">
+                                                    <input type="text" class="form-input highlight-input" value="<%= highlight %>" placeholder="Enter highlight">
+                                                    <button type="button" onclick="removeHighlight(this)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-2 rounded-lg">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <div class="highlight-item">
+                                                <input type="text" class="form-input highlight-input" placeholder="Enter highlight">
+                                                <button type="button" onclick="removeHighlight(this)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-2 rounded-lg">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                    <button type="button" onclick="addHighlight()" class="mt-2 bg-green-100 hover:bg-green-200 text-green-600 px-4 py-2 rounded-lg font-medium transition-colors">
+                                        <i class="fas fa-plus mr-2"></i>Add Highlight
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center justify-end space-x-4 pt-6 border-t">
+                                    <a href="/admin/tours" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                        Cancel
+                                    </a>
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                        <i class="fas fa-save mr-2"></i>
+                                        <%= action === 'add' ? 'Create Tour' : 'Update Tour' %>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const action = '<%= action %>';
+        const tourId = '<%= tour ? tour.id : "" %>';
+
+        // Initialize existing image on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const existingImage = document.getElementById('image').value;
+            if (existingImage) {
+                showImagePreview(existingImage);
+                document.getElementById('image-url').value = existingImage;
+            }
+        });
+
+        // Handle file upload
+        async function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+                input.value = '';
+                return;
+            }
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                input.value = '';
+                return;
+            }
+
+            // Show loading state
+            const label = document.querySelector('label[for="image-file"]');
+            const originalText = label.innerHTML;
+            label.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...';
+            label.classList.add('opacity-50', 'cursor-not-allowed');
+
+            try {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                const response = await fetch('/api/upload-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('image').value = result.imagePath;
+                    document.getElementById('image-url').value = '';
+                    showImagePreview(result.imagePath);
+                    alert('Image uploaded successfully!');
+                } else {
+                    alert('Upload failed: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Upload failed. Please try again.');
+            } finally {
+                // Reset button state
+                label.innerHTML = originalText;
+                label.classList.remove('opacity-50', 'cursor-not-allowed');
+                input.value = '';
+            }
+        }
+
+        // Handle URL input
+        function handleUrlInput(input) {
+            const url = input.value.trim();
+            if (url) {
+                document.getElementById('image').value = url;
+                showImagePreview(url);
+                
+                // Test if URL is valid by trying to load the image
+                const testImg = new Image();
+                testImg.onload = function() {
+                    // Image loaded successfully
+                };
+                testImg.onerror = function() {
+                    alert('Unable to load image from this URL. Please check the URL and try again.');
+                };
+                testImg.src = url;
+            } else {
+                hideImagePreview();
+                document.getElementById('image').value = '';
+            }
+        }
+
+        // Show image preview
+        function showImagePreview(imagePath) {
+            const container = document.getElementById('image-preview-container');
+            const preview = document.getElementById('image-preview');
+            
+            // Handle both relative and absolute URLs
+            const imageUrl = imagePath.startsWith('http') ? imagePath : imagePath;
+            
+            preview.src = imageUrl;
+            container.classList.remove('hidden');
+        }
+
+        // Hide image preview
+        function hideImagePreview() {
+            const container = document.getElementById('image-preview-container');
+            container.classList.add('hidden');
+        }
+
+        // Remove image
+        function removeImage() {
+            document.getElementById('image').value = '';
+            document.getElementById('image-url').value = '';
+            hideImagePreview();
+        }
+
+        function addHighlight() {
+            const container = document.getElementById('highlights-container');
+            const div = document.createElement('div');
+            div.className = 'highlight-item';
+            div.innerHTML = `
+                <input type="text" class="form-input highlight-input" placeholder="Enter highlight">
+                <button type="button" onclick="removeHighlight(this)" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-2 rounded-lg">
+                    <i class="fas fa-minus"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeHighlight(button) {
+            const container = document.getElementById('highlights-container');
+            if (container.children.length > 1) {
+                button.parentElement.remove();
+            }
+        }
+
+        document.getElementById('tour-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const duration = document.getElementById('duration').value;
+            const destination = document.getElementById('destination').value;
+            const category_id = document.getElementById('category_id').value;
+            const image = document.getElementById('image').value;
+            
+            const highlights = Array.from(document.querySelectorAll('.highlight-input'))
+                .map(input => input.value)
+                .filter(value => value.trim() !== '');
+
+            const formData = {
+                title,
+                description,
+                price,
+                duration,
+                destination,
+                category_id,
+                image,
+                highlights
+            };
+
+            try {
+                const url = action === 'add' ? '/api/admin/tours' : `/api/admin/tours/${tourId}`;
+                const method = action === 'add' ? 'POST' : 'PUT';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    window.location.href = '/admin/tours';
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error saving tour:', error);
+                alert('Error saving tour. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

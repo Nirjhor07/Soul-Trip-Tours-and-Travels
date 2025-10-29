@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tours - Soul Trip Tours and Travels</title>
+    <meta
+      name="description"
+      content="Explore our complete collection of adventure tours, cultural experiences, and travel packages around the world."
+    />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-96 bg-cover bg-center"
+      style="
+        background-image: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.3)
+          ),
+          url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+      ></div>
+      <div class="relative container-custom h-full flex items-center">
+        <div class="text-white">
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4 text-shadow-lg">
+            All Tours
+          </h1>
+          <p class="text-xl text-gray-200 text-shadow">
+            Discover your next adventure
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="py-8 bg-white border-b">
+      <div class="container-custom">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-2xl font-bold text-gray-900">
+            <%= tours.length %> Tours Available <% if (currentCategory) { %> -
+            <span class="text-primary-600"><%= currentCategory %></span>
+            <% } %>
+          </h2>
+
+          <div class="flex flex-wrap gap-2">
+            <a
+              href="/tours"
+              class="px-4 py-2 rounded-lg <%= !currentCategory ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              All Tours
+            </a>
+            <a
+              href="/tours?category=ADVENTURE"
+              class="px-4 py-2 rounded-lg <%= currentCategory === 'ADVENTURE' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              Adventure
+            </a>
+            <a
+              href="/tours?category=CULTURAL"
+              class="px-4 py-2 rounded-lg <%= currentCategory === 'CULTURAL' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              Cultural
+            </a>
+            <a
+              href="/tours?category=WILDLIFE"
+              class="px-4 py-2 rounded-lg <%= currentCategory === 'WILDLIFE' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              Wildlife
+            </a>
+            <a
+              href="/tours?category=NATURE"
+              class="px-4 py-2 rounded-lg <%= currentCategory === 'NATURE' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              Nature
+            </a>
+            <a
+              href="/tours?category=CLASSIC"
+              class="px-4 py-2 rounded-lg <%= currentCategory === 'CLASSIC' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' %> transition-colors duration-200"
+            >
+              Classic
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tours Grid -->
+    <section class="section-padding">
+      <div class="container-custom">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% tours.forEach(tour => { %>
+          <div class="card overflow-hidden group">
+            <div class="relative h-64 overflow-hidden">
+              <img
+                src="<%= tour.image.startsWith('http') ? tour.image : (tour.image.startsWith('/') ? tour.image : '/images/' + tour.image) %>"
+                alt="<%= tour.title %>"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div class="absolute top-4 left-4">
+                <span
+                  class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  <%= tour.category %>
+                </span>
+              </div>
+              <div class="absolute top-4 right-4">
+                <span
+                  class="bg-white text-gray-900 px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  <%= tour.duration %>
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3
+                class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-200"
+              >
+                <%= tour.title %>
+              </h3>
+              <p class="text-gray-600 mb-4"><%= tour.description %></p>
+
+              <div class="space-y-2 mb-4">
+                <div class="flex items-center text-gray-500">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span><%= tour.route %></span>
+                </div>
+                <div class="flex items-center text-gray-500">
+                  <i class="fas fa-globe mr-2"></i>
+                  <span><%= tour.destination %></span>
+                </div>
+              </div>
+
+              <!-- Highlights -->
+              <div class="mb-4">
+                <div class="flex flex-wrap gap-1">
+                  <% tour.highlights.slice(0, 3).forEach(highlight => { %>
+                  <span
+                    class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
+                  >
+                    <%= highlight %>
+                  </span>
+                  <% }) %> <% if (tour.highlights.length > 3) { %>
+                  <span
+                    class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
+                  >
+                    +<%= tour.highlights.length - 3 %> more
+                  </span>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-2xl font-bold text-primary-600"
+                    >$<%= tour.price %></span
+                  >
+                  <span class="text-gray-500"> USD</span>
+                </div>
+                <a href="/tour/<%= tour.id %>" class="btn-primary"
+                  >View Details</a
+                >
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+        <% if (tours.length === 0) { %>
+        <div class="text-center py-16">
+          <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">No tours found</h3>
+          <p class="text-gray-600 mb-6">
+            Try selecting a different category or browse all tours.
+          </p>
+          <a href="/tours" class="btn-primary">View All Tours</a>
+        </div>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section
+      class="py-16 bg-gradient-to-r from-primary-600 to-accent-500 text-white"
+    >
+      <div class="container-custom text-center">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4">
+          Can't Find What You're Looking For?
+        </h2>
+        <p class="text-xl mb-6">Let us create a custom tour just for you!</p>
+        <a
+          href="/contact"
+          class="bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+        >
+          Contact Us
+        </a>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-btn")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+  </body>
+</html>

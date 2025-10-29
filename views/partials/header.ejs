@@ -1,0 +1,105 @@
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <!-- Admin Styles -->
+  <link rel="stylesheet" href="/css/admin-styles.css" />
+
+  <nav class="container-custom">
+    <div class="flex justify-between items-center py-4">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 flex items-center justify-center">
+          <img
+            src="<%= settings.site_logo || '/logo/soul-trip-logo.png' %>"
+            alt="<%= settings.company_name || 'Soul Trip Tours & Travels' %> Logo"
+            class="w-full h-full object-contain"
+          />
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold gradient-text"><%= settings.company_name || 'Soul Trip' %></h1>
+          <p class="text-sm text-gray-600"><%= settings.company_tagline || 'Tours & Travels' %></p>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a
+          href="/"
+          class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+          >Home</a
+        >
+        <a
+          href="/tours"
+          class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+          >Tours</a
+        >
+        <a
+          href="/about"
+          class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+          >About</a
+        >
+        <a
+          href="/contact"
+          class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+          >Contact</a
+        >
+
+        <!-- Admin Direct Link -->
+        <a
+          href="/admin/dashboard"
+          class="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-100"
+        >
+          <i class="fas fa-user-shield text-lg"></i>
+          <span class="text-sm font-medium">Admin</span>
+        </a>
+
+        <a href="/contact" class="btn-primary">Book Now</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        class="md:hidden text-gray-700 hover:text-primary-600"
+        id="mobile-menu-btn"
+      >
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="py-4 border-t border-gray-200">
+        <a
+          href="/"
+          class="block py-2 text-gray-700 hover:text-primary-600 font-medium"
+          >Home</a
+        >
+        <a
+          href="/tours"
+          class="block py-2 text-gray-700 hover:text-primary-600 font-medium"
+          >Tours</a
+        >
+        <a
+          href="/about"
+          class="block py-2 text-gray-700 hover:text-primary-600 font-medium"
+          >About</a
+        >
+        <a
+          href="/contact"
+          class="block py-2 text-gray-700 hover:text-primary-600 font-medium"
+          >Contact</a
+        >
+
+        <!-- Mobile Admin Section -->
+        <a
+          href="/admin/dashboard"
+          class="block mt-4 pt-4 border-t border-gray-200 py-2 text-gray-700 hover:text-primary-600 font-medium"
+        >
+          <i class="fas fa-user-shield mr-2"></i>
+          <span>Admin Panel</span>
+        </a>
+
+        <a href="/contact" class="block mt-4 btn-primary text-center"
+          >Book Now</a
+        >
+      </div>
+    </div>
+  </nav>
+</header>

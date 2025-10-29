@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Soul Trip Tours</title>
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      .admin-sidebar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .admin-card {
+        transition: all 0.3s ease;
+      }
+      .admin-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .stats-card {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      .stats-card.tours {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+      .stats-card.bookings {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+      .stats-card.inquiries {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <div class="admin-sidebar w-64 shadow-xl">
+        <div class="p-6">
+          <div class="flex items-center space-x-3 mb-8">
+            <div
+              class="w-10 h-10 bg-white rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-user-shield text-purple-600 text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-white font-bold text-lg">Admin Panel</h2>
+              <p class="text-purple-200 text-sm">Soul Trip Tours</p>
+            </div>
+          </div>
+
+          <nav class="space-y-2">
+            <a
+              href="/admin/dashboard"
+              class="flex items-center space-x-3 text-white bg-white bg-opacity-20 rounded-lg px-4 py-3 font-medium"
+            >
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+            <a
+              href="/admin/tours"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-map-marked-alt"></i>
+              <span>Manage Tours</span>
+            </a>
+            <a
+              href="/admin/bookings"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-calendar-check"></i>
+              <span>Bookings</span>
+            </a>
+            <a
+              href="/admin/contacts"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-envelope"></i>
+              <span>Contact Inquiries</span>
+            </a>
+            <a
+              href="/admin/settings"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+            <a
+              href="/admin/about"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-info-circle"></i>
+              <span>About Page</span>
+            </a>
+            <a
+              href="/admin/analytics"
+              class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+            >
+              <i class="fas fa-chart-line"></i>
+              <span>Analytics</span>
+            </a>
+            <div class="border-t border-purple-300 mt-6 pt-6">
+              <a
+                href="/"
+                class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors"
+              >
+                <i class="fas fa-globe"></i>
+                <span>View Website</span>
+              </a>
+              <form action="/admin/logout" method="POST" class="w-full">
+                <button
+                  type="submit"
+                  class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-red-500 hover:bg-opacity-80 rounded-lg px-4 py-3 transition-colors w-full text-left"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Logout</span>
+                </button>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1">
+        <!-- Header -->
+        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">
+                Dashboard Overview
+              </h1>
+              <p class="text-gray-600">
+                Welcome back! Here's what's happening with your travel business.
+              </p>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <button
+                  class="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
+                >
+                  <i class="fas fa-bell text-lg"></i>
+                  <span
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                    >3</span
+                  >
+                </button>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full flex items-center justify-center"
+                >
+                  <i class="fas fa-user text-white text-sm"></i>
+                </div>
+                <span class="font-medium text-gray-700">Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="p-6">
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <div class="stats-card tours text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-blue-100 text-sm font-medium">Total Tours</p>
+                  <p class="text-3xl font-bold" id="total-tours">6</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-map-marked-alt text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card bookings text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-green-100 text-sm font-medium">
+                    Total Bookings
+                  </p>
+                  <p class="text-3xl font-bold" id="total-bookings">0</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-calendar-check text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card inquiries text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-pink-100 text-sm font-medium">
+                    Contact Inquiries
+                  </p>
+                  <p class="text-3xl font-bold" id="total-inquiries">0</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-envelope text-xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-card text-white rounded-xl p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-purple-100 text-sm font-medium">
+                    Revenue (Est.)
+                  </p>
+                  <p class="text-3xl font-bold">$0</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-dollar-sign text-xl"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="admin-card bg-white rounded-xl shadow-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Quick Actions</h3>
+                <i class="fas fa-bolt text-yellow-500 text-xl"></i>
+              </div>
+              <div class="space-y-3">
+                <a
+                  href="/admin/tours/add"
+                  class="flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                >
+                  <div class="flex items-center space-x-3">
+                    <i class="fas fa-plus text-blue-600"></i>
+                    <span class="font-medium text-gray-700">Add New Tour</span>
+                  </div>
+                  <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a
+                  href="/admin/bookings"
+                  class="flex items-center justify-between p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+                >
+                  <div class="flex items-center space-x-3">
+                    <i class="fas fa-eye text-green-600"></i>
+                    <span class="font-medium text-gray-700">View Bookings</span>
+                  </div>
+                  <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a
+                  href="/admin/contacts"
+                  class="flex items-center justify-between p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                >
+                  <div class="flex items-center space-x-3">
+                    <i class="fas fa-envelope text-purple-600"></i>
+                    <span class="font-medium text-gray-700"
+                      >Check Messages</span
+                    >
+                  </div>
+                  <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="admin-card bg-white rounded-xl shadow-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Recent Activity</h3>
+                <i class="fas fa-clock text-gray-400 text-xl"></i>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center space-x-3 p-2">
+                  <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p class="text-sm text-gray-600">
+                    System initialized successfully
+                  </p>
+                </div>
+                <div class="flex items-center space-x-3 p-2">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <p class="text-sm text-gray-600">Database connected</p>
+                </div>
+                <div class="flex items-center space-x-3 p-2">
+                  <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <p class="text-sm text-gray-600">Admin panel accessed</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-card bg-white rounded-xl shadow-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">System Status</h3>
+                <i class="fas fa-server text-green-500 text-xl"></i>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-600">Server Status</span>
+                  <span class="flex items-center text-sm text-green-600">
+                    <i class="fas fa-circle text-xs mr-2"></i>Online
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-600">Database</span>
+                  <span class="flex items-center text-sm text-green-600">
+                    <i class="fas fa-circle text-xs mr-2"></i>Connected
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-gray-600">Email Service</span>
+                  <span class="flex items-center text-sm text-green-600">
+                    <i class="fas fa-circle text-xs mr-2"></i>Active
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin Capabilities Overview -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div
+              class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-purple-600"
+            >
+              <h3 class="text-lg font-semibold text-white">
+                <i class="fas fa-crown mr-2 text-yellow-300"></i>Complete Admin
+                Control Panel
+              </h3>
+              <p class="text-blue-100 text-sm">
+                You have full management access to all website features
+              </p>
+            </div>
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div
+                  class="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500"
+                >
+                  <i class="fas fa-map-marked-alt text-blue-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Tour Management</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >Create, Edit, Delete, Update All Tours</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center space-x-3 p-4 bg-green-50 rounded-lg border-l-4 border-green-500"
+                >
+                  <i class="fas fa-building text-green-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Company Settings</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >Update Address, Contact Info, Details</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center space-x-3 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500"
+                >
+                  <i class="fas fa-envelope text-purple-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Contact Management</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >Change Email, Phone, Address</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center space-x-3 p-4 bg-red-50 rounded-lg border-l-4 border-red-500"
+                >
+                  <i class="fas fa-calendar-check text-red-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Booking Control</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >Manage, Delete, Update Bookings</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center space-x-3 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500"
+                >
+                  <i class="fas fa-cog text-yellow-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Website Settings</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >Modify Everything, Full Control</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center space-x-3 p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500"
+                >
+                  <i class="fas fa-chart-line text-indigo-600 text-lg"></i>
+                  <div>
+                    <span class="font-semibold text-gray-900 block"
+                      >Analytics & Reports</span
+                    >
+                    <span class="text-sm text-gray-600"
+                      >View All Data, Generate Reports</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div
+                class="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200"
+              >
+                <div class="flex items-center space-x-3">
+                  <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                  <div>
+                    <p class="font-semibold text-gray-900">
+                      ✅ Admin has COMPLETE control to manage, update, delete,
+                      add, remove EVERYTHING!
+                    </p>
+                    <p class="text-sm text-gray-600 mt-1">
+                      Including: Tour packages, addresses, contact emails,
+                      company info, bookings, settings, analytics - absolutely
+                      everything on the website.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Tours -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-gray-900">Recent Tours</h3>
+                <a
+                  href="/admin/tours"
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                  >View All</a
+                >
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Tour Name
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Category
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Price
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Duration
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="bg-white divide-y divide-gray-200"
+                  id="tours-table"
+                >
+                  <!-- Tours will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Load dashboard data
+      document.addEventListener("DOMContentLoaded", function () {
+        loadDashboardStats();
+        loadRecentTours();
+      });
+
+      async function loadDashboardStats() {
+        try {
+          const response = await fetch("/api/admin/stats");
+          const data = await response.json();
+
+          document.getElementById("total-tours").textContent = data.tours || 6;
+          document.getElementById("total-bookings").textContent =
+            data.bookings || 0;
+          document.getElementById("total-inquiries").textContent =
+            data.inquiries || 0;
+        } catch (error) {
+          console.error("Error loading stats:", error);
+        }
+      }
+
+      async function loadRecentTours() {
+        try {
+          const response = await fetch("/api/admin/tours?limit=5");
+          const tours = await response.json();
+
+          const tbody = document.getElementById("tours-table");
+          tbody.innerHTML = tours
+            .map(
+              (tour) => `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="font-medium text-gray-900">${tour.title}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${tour.category}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${tour.price}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${tour.duration}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="/admin/tours/edit/${tour.id}" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                            <button onclick="deleteTour(${tour.id})" class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                    </tr>
+                `
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error loading tours:", error);
+          document.getElementById("tours-table").innerHTML =
+            '<tr><td colspan="6" class="text-center py-4 text-gray-500">Failed to load tours</td></tr>';
+        }
+      }
+
+      async function deleteTour(tourId) {
+        if (confirm("Are you sure you want to delete this tour?")) {
+          try {
+            const response = await fetch(`/api/admin/tours/${tourId}`, {
+              method: "DELETE",
+            });
+
+            if (response.ok) {
+              alert("Tour deleted successfully!");
+              loadRecentTours();
+              loadDashboardStats();
+            } else {
+              alert("Failed to delete tour");
+            }
+          } catch (error) {
+            console.error("Error deleting tour:", error);
+            alert("Error deleting tour");
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

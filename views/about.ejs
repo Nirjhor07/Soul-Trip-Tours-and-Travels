@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Soul Trip Tours and Travels</title>
+    <meta
+      name="description"
+      content="Learn about Soul Trip Tours and Travels - our mission, values, and commitment to creating unforgettable travel experiences."
+    />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-96 bg-cover bg-center"
+      style="
+        background-image: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.3)
+          ),
+          url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+      ></div>
+      <div class="relative container-custom h-full flex items-center">
+        <div class="text-white">
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4 text-shadow-lg">
+            <% 
+            const heroTitle = aboutData.content.find(item => item.section_key === 'hero_title');
+            %>
+            <%= heroTitle ? heroTitle.content : 'About Soul Trip' %>
+          </h1>
+          <p class="text-xl text-gray-200 text-shadow">
+            <% 
+            const heroSubtitle = aboutData.content.find(item => item.section_key === 'hero_subtitle');
+            %>
+            <%= heroSubtitle ? heroSubtitle.content : 'Creating unforgettable travel experiences since 2025' %>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <% 
+            const storyTitle = aboutData.content.find(item => item.section_key === 'story_title');
+            %>
+            <%= storyTitle ? storyTitle.content : 'Our Story' %>
+          </h2>
+          <p class="text-xl text-gray-600 leading-relaxed">
+            <% 
+            const storyContent = aboutData.content.find(item => item.section_key === 'story_content');
+            %>
+            <%= storyContent ? storyContent.content : 'Soul Trip Tours and Travels was born from a passion for adventure and a deep belief that travel has the power to transform lives.' %>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div>
+            <img
+              src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Travel group"
+              class="rounded-xl shadow-lg"
+            />
+          </div>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-900 mb-6">
+              <% 
+              const missionTitle = aboutData.content.find(item => item.section_key === 'mission_title');
+              %>
+              <%= missionTitle ? missionTitle.content : 'Our Mission' %>
+            </h3>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6">
+              <% 
+              const missionContent = aboutData.content.find(item => item.section_key === 'mission_content');
+              %>
+              <%= missionContent ? missionContent.content : 'We believe that travel should be more than just visiting places – it should be about connecting with cultures, understanding different perspectives, and creating memories that last a lifetime.' %>
+            </p>
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+                <span class="font-semibold"
+                  >Small group adventures (max 16 people)</span
+                >
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+                <span class="font-semibold"
+                  >Expert local guides and cultural immersion</span
+                >
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+                <span class="font-semibold"
+                  >Sustainable and responsible travel practices</span
+                >
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+                <span class="font-semibold"
+                  >Personalized attention and flexible itineraries</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section-padding bg-gray-50">
+      <div class="container-custom">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <% 
+            const valuesTitle = aboutData.content.find(item => item.section_key === 'values_title');
+            %>
+            <%= valuesTitle ? valuesTitle.content : 'Our Values' %>
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <% 
+            const valuesSubtitle = aboutData.content.find(item => item.section_key === 'values_subtitle');
+            %>
+            <%= valuesSubtitle ? valuesSubtitle.content : 'These core principles guide everything we do and shape the way we approach travel.' %>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% aboutData.values.forEach(value => { %>
+          <div
+            class="bg-white rounded-xl p-8 shadow-lg text-center group hover:shadow-xl transition-all duration-300"
+          >
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="<%= value.icon || 'fas fa-star' %> text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">
+              <%= value.title %>
+            </h3>
+            <p class="text-gray-600">
+              <%= value.description %>
+            </p>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <% 
+            const teamTitle = aboutData.content.find(item => item.section_key === 'team_title');
+            %>
+            <%= teamTitle ? teamTitle.content : 'Meet Our Team' %>
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <% 
+            const teamSubtitle = aboutData.content.find(item => item.section_key === 'team_subtitle');
+            %>
+            <%= teamSubtitle ? teamSubtitle.content : 'The passionate individuals behind your unforgettable adventures.' %>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% aboutData.team.forEach(member => { %>
+          <div
+            class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300"
+          >
+            <img
+              src="<%= member.image_url || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' %>"
+              alt="<%= member.name %>"
+              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2"><%= member.name %></h3>
+              <p class="text-primary-600 font-semibold mb-3">
+                <%= member.position %>
+              </p>
+              <p class="text-gray-600">
+                <%= member.bio %>
+              </p>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section
+      class="section-padding bg-gradient-to-r from-primary-600 to-accent-500 text-white"
+    >
+      <div class="container-custom">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center"
+        >
+          <% aboutData.stats.forEach(stat => { %>
+          <div>
+            <div class="text-4xl lg:text-5xl font-bold mb-2"><%= stat.stat_value %></div>
+            <p class="text-xl"><%= stat.stat_label %></p>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section-padding bg-white">
+      <div class="container-custom text-center">
+        <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <% 
+          const ctaTitle = aboutData.content.find(item => item.section_key === 'cta_title');
+          %>
+          <%= ctaTitle ? ctaTitle.content : 'Ready to Start Your Soul Trip?' %>
+        </h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <% 
+          const ctaContent = aboutData.content.find(item => item.section_key === 'cta_content');
+          %>
+          <%= ctaContent ? ctaContent.content : 'Join us on an adventure that will touch your soul and create memories to last a lifetime.' %>
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/tours" class="btn-primary text-lg px-8 py-4"
+            >Explore Tours</a
+          >
+          <a href="/contact" class="btn-secondary text-lg px-8 py-4"
+            >Contact Us</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-btn")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+  </body>
+</html>

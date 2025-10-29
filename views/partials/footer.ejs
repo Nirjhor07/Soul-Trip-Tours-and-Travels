@@ -1,0 +1,191 @@
+<footer class="bg-gray-900 text-white">
+  <div class="container-custom section-padding">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Company Info -->
+      <div class="space-y-4">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-12 h-12 bg-white rounded-lg p-2 flex items-center justify-center"
+          >
+            <img
+              src="<%= settings.company_logo || '/logo/soul-trip-logo.png' %>"
+              alt="<%= settings.company_name || 'Soul Trip Tours & Travels' %> Logo"
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <div>
+            <h3 class="text-xl font-bold"><%= settings.company_name || 'Soul Trip' %></h3>
+            <p class="text-sm text-gray-300"><%= settings.company_tagline || 'Tours & Travels' %></p>
+          </div>
+        </div>
+        <p class="text-gray-300">
+          <%= settings.company_description || 'Creating unforgettable travel experiences since 2025. We specialize in small group & large group adventures that bring the world closer.' %>
+        </p>
+        <div class="flex space-x-4">
+          <% if (settings.facebook_url) { %>
+          <a
+            href="<%= settings.facebook_url %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <% } %>
+          <% if (settings.instagram_url) { %>
+          <a
+            href="<%= settings.instagram_url %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <% } %>
+          <% if (settings.twitter_url) { %>
+          <a
+            href="<%= settings.twitter_url %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <% } %>
+          <% if (settings.youtube_url) { %>
+          <a
+            href="<%= settings.youtube_url %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+          >
+            <i class="fab fa-youtube"></i>
+          </a>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Quick Links</h3>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="/"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              href="/tours"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >All Tours</a
+            >
+          </li>
+          <li>
+            <a
+              href="/about"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >About Us</a
+            >
+          </li>
+          <li>
+            <a
+              href="/contact"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Contact</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >FAQ</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tour Categories -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Tour Categories</h3>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="/tours?category=ADVENTURE"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Adventure Tours</a
+            >
+          </li>
+          <li>
+            <a
+              href="/tours?category=CULTURAL"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Cultural Tours</a
+            >
+          </li>
+          <li>
+            <a
+              href="/tours?category=WILDLIFE"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Wildlife Tours</a
+            >
+          </li>
+          <li>
+            <a
+              href="/tours?category=NATURE"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Nature Tours</a
+            >
+          </li>
+          <li>
+            <a
+              href="/tours?category=CLASSIC"
+              class="text-gray-300 hover:text-primary-400 transition-colors duration-200"
+              >Classic Tours</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">Get in Touch</h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3">
+            <i class="fas fa-map-marker-alt text-primary-400"></i>
+            <span class="text-gray-300"><%= settings.contact_address || 'Green City Regency, 26-27 kakrail, Level-11, Dhaka-1000' %></span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <i class="fas fa-phone text-primary-400"></i>
+            <span class="text-gray-300"><%= settings.contact_phone || '+880 1616-578097' %></span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <i class="fas fa-envelope text-primary-400"></i>
+            <span class="text-gray-300"><%= settings.contact_email || 'soultripst@gmail.com' %></span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <i class="fas fa-clock text-primary-400"></i>
+            <span class="text-gray-300"><%= settings.business_hours || 'Saturday-Thursday: 9:00 AM - 6:00 PM, Friday: Closed' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+      <p class="text-gray-300">
+        &copy; <%= new Date().getFullYear() %> <%= settings.company_name || 'Soul Trip Tours and Travels' %>. All
+        rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

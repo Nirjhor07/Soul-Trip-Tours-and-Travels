@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Soul Trip Tours</title>
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/admin-styles.css" />
+  </head>
+  <body
+    class="bg-gradient-to-br from-primary-50 to-accent-50 min-h-screen flex items-center justify-center"
+  >
+    <div class="max-w-md w-full mx-4">
+      <!-- Logo Section -->
+      <div class="text-center mb-8">
+        <div class="flex justify-center mb-4">
+          <div
+            class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center"
+          >
+            <img
+              src="/logo/soul-trip-logo.png"
+              alt="Soul Trip Logo"
+              class="w-12 h-12 object-contain"
+            />
+          </div>
+        </div>
+        <h1 class="text-3xl font-bold gradient-text">Soul Trip</h1>
+        <p class="text-gray-600 mt-2">Admin Panel Access</p>
+      </div>
+
+      <!-- Login Form -->
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20"
+      >
+        <div class="text-center mb-6">
+          <i class="fas fa-shield-alt text-4xl text-primary-600 mb-3"></i>
+          <h2 class="text-2xl font-bold text-gray-900">Admin Login</h2>
+          <p class="text-gray-600 mt-1">
+            Enter your credentials to access the admin panel
+          </p>
+        </div>
+
+        <!-- Error Message -->
+        <% if (typeof error !== 'undefined' && error) { %>
+        <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <% if (error === 'invalid') { %>
+            Invalid username or password. Please try again.
+          <% } else if (error === 'unauthorized') { %>
+            You must be logged in to access the admin panel.
+          <% } else { %>
+            An error occurred. Please try again.
+          <% } %>
+        </div>
+        <% } %>
+
+        <form action="/admin/login" method="POST" id="admin-login-form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <i class="fas fa-user mr-2 text-primary-600"></i>Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <i class="fas fa-lock mr-2 text-primary-600"></i>Password
+            </label>
+            <div class="relative">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-gray-50 focus:bg-white pr-12"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                id="toggle-password-btn"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <i class="fas fa-eye" id="password-toggle-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
+              />
+              <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a
+              href="#"
+              class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+              >Forgot password?</a
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 shadow-lg hover:shadow-xl"
+          >
+            <i class="fas fa-sign-in-alt mr-2"></i>Sign In to Admin Panel
+          </button>
+        </form>
+      </div>
+
+      <!-- Back to Website -->
+      <div class="text-center mt-6">
+        <a
+          href="/"
+          class="inline-flex items-center text-gray-600 hover:text-primary-600 transition-colors font-medium"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>Back to Website
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Password toggle
+        const toggleBtn = document.getElementById("toggle-password-btn");
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("password-toggle-icon");
+
+        toggleBtn.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+
+          if (type === "password") {
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+          } else {
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+          }
+        });
+
+        // Form submission - Let server handle authentication
+        // Form will submit normally to POST /admin/login
+      });
+    </script>
+  </body>
+</html>

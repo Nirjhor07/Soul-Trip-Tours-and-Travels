@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <%= typeof title !== 'undefined' ? title + ' - ' : '' %>Soul Trip Tours
+      and Travels
+    </title>
+    <meta
+      name="description"
+      content="Soul Trip Tours and Travels - Discover amazing destinations with our expertly crafted travel packages and adventures around the world."
+    />
+    <meta
+      name="keywords"
+      content="travel, tours, adventures, soul trip, vacation packages, travel agency"
+    />
+
+    <!-- Tailwind CSS -->
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Soul Trip Tours and Travels" />
+    <meta
+      property="og:description"
+      content="Discover amazing destinations with our expertly crafted travel packages and adventures around the world."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://soultriptours.com" />
+
+    <!-- Additional head content -->
+    <% if (typeof additionalHead !== 'undefined') { %> <%- additionalHead %> <%
+    } %>
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/header') %>
+
+    <main><%- body %></main>
+
+    <%- include('partials/footer') %>
+
+    <!-- Scripts -->
+    <script src="/js/main.js"></script>
+
+    <!-- Additional scripts -->
+    <% if (typeof additionalScripts !== 'undefined') { %> <%- additionalScripts
+    %> <% } %>
+  </body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Soul Trip Tours Admin</title>
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/admin-styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-sidebar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .settings-card { transition: all 0.3s ease; }
+        .settings-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="admin-sidebar w-64 shadow-xl">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-shield text-purple-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-white font-bold text-lg">Admin Panel</h2>
+                        <p class="text-purple-200 text-sm">Soul Trip Tours</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+                    </a>
+                    <a href="/admin/tours" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-map-marked-alt"></i><span>Manage Tours</span>
+                    </a>
+                    <a href="/admin/bookings" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-calendar-check"></i><span>Bookings</span>
+                    </a>
+                    <a href="/admin/contacts" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-envelope"></i><span>Contact Inquiries</span>
+                    </a>
+                    <a href="/admin/settings" class="flex items-center space-x-3 text-white bg-white bg-opacity-20 rounded-lg px-4 py-3 font-medium">
+                        <i class="fas fa-cog"></i><span>Settings</span>
+                    </a>
+                    <a href="/admin/analytics" class="flex items-center space-x-3 text-purple-200 hover:text-white hover:bg-white hover:bg-opacity-20 rounded-lg px-4 py-3 transition-colors">
+                        <i class="fas fa-chart-line"></i><span>Analytics</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1">
+            <!-- Header -->
+            <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Website Settings</h1>
+                        <p class="text-gray-600">Manage all aspects of your website content and configuration</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="/" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-external-link-alt mr-2"></i>View Site
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Category Tabs -->
+                    <div class="bg-white rounded-lg shadow-md mb-6">
+                        <div class="border-b border-gray-200">
+                            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="categoryTabs">
+                                <% categories.forEach((category, index) => { %>
+                                <li class="mr-2">
+                                    <button class="inline-block p-4 border-b-2 <%= index === 0 ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-600 hover:border-gray-300' %> rounded-t-lg category-tab" data-category="<%= category %>">
+                                        <i class="<%- getCategoryIcon(category) %> mr-2"></i>
+                                        <%= category.charAt(0).toUpperCase() + category.slice(1) %>
+                                    </button>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Settings Forms -->
+                    <div id="settingsContainer">
+                        <% categories.forEach((category, index) => { %>
+                        <div class="category-content <%= index === 0 ? '' : 'hidden' %>" data-category="<%= category %>">
+                            <div class="grid gap-6">
+                                <% 
+                                const categorySettings = settings.filter(s => s.category === category);
+                                categorySettings.forEach(setting => { 
+                                %>
+                                <div class="settings-card bg-white rounded-lg shadow-md p-6">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <label class="block text-lg font-semibold text-gray-700 mb-2">
+                                                <%= setting.display_name %>
+                                            </label>
+                                            <% if (setting.description) { %>
+                                            <p class="text-sm text-gray-500 mb-3"><%= setting.description %></p>
+                                            <% } %>
+                                        </div>
+                                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
+                                            <%= setting.type %>
+                                        </span>
+                                    </div>
+                                    
+                    <div class="setting-input">
+                        <% if (setting.type === 'textarea') { %>
+                        <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical transition-colors" data-setting="<%= setting.setting_key %>" rows="4" placeholder="<%= setting.default_value %>"><%= setting.value %></textarea>
+                        <% } else if (setting.type === 'email') { %>
+                        <input type="email" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" data-setting="<%= setting.setting_key %>" value="<%= setting.value %>" placeholder="<%= setting.default_value %>" />
+                        <% } else if (setting.type === 'url') { %>
+                        <input type="url" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" data-setting="<%= setting.setting_key %>" value="<%= setting.value %>" placeholder="<%= setting.default_value %>" />
+                        <% } else if (setting.type === 'number') { %>
+                        <input type="number" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" data-setting="<%= setting.setting_key %>" value="<%= setting.value %>" placeholder="<%= setting.default_value %>" />
+                        <% } else if (setting.type === 'image') { %>
+                        <!-- Current Image Display -->
+                        <% if (setting.value) { %>
+                        <div class="current-image mb-4">
+                            <img src="<%= setting.value %>" alt="<%= setting.display_name %>" class="max-w-xs max-h-32 object-contain border rounded">
+                            <small class="text-muted d-block mt-2">Current <%= setting.display_name.toLowerCase() %></small>
+                        </div>
+                        <% } else { %>
+                        <div class="mb-4">
+                            <small class="text-muted">No image uploaded</small>
+                        </div>
+                        <% } %>
+                        
+                        <!-- File Upload for Image -->
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Image</label>
+                            <input type="file" name="image_upload" class="image-upload-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" accept="image/*" data-setting="<%= setting.setting_key %>">
+                            <small class="text-gray-500 text-xs mt-1 block">Supports: JPG, PNG, GIF, WebP (Max 5MB)</small>
+                        </div>
+                        
+                        <!-- URL Input as fallback -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Or Image URL</label>
+                            <input type="url" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" data-setting="<%= setting.setting_key %>" value="<%= setting.value %>" placeholder="<%= setting.default_value %>" />
+                            <small class="text-gray-500 text-xs mt-1 block">Upload will override URL if both are provided</small>
+                        </div>
+                        <% } else { %>
+                        <input type="text" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" data-setting="<%= setting.setting_key %>" value="<%= setting.value %>" placeholder="<%= setting.default_value %>" />
+                        <% } %>
+                    </div>                                    <div class="mt-4 flex justify-between items-center">
+                                        <button class="save-setting-btn bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium" data-setting="<%= setting.setting_key %>">
+                                            <i class="fas fa-save mr-2"></i>Save
+                                        </button>
+                                        <span class="text-sm text-gray-400">
+                                            Last updated: <%= setting.updated_at ? new Date(setting.updated_at).toLocaleDateString() : 'Never' %>
+                                        </span>
+                                    </div>
+                                </div>
+                                <% }) %>
+                                
+                                <% if (categorySettings.length === 0) { %>
+                                <div class="text-center py-12 text-gray-500">
+                                    <i class="fas fa-info-circle text-3xl mb-4"></i>
+                                    <p class="text-lg">No settings available for this category yet.</p>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Bulk Actions -->
+                    <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Bulk Actions</h3>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <button id="saveAllBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
+                                <i class="fas fa-save mr-2"></i>Save All Changes
+                            </button>
+                            <button id="refreshBtn" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-sync mr-2"></i>Refresh Data
+                            </button>
+                            <div id="rateLimitStatus" class="text-sm text-gray-600 hidden">
+                                <i class="fas fa-clock mr-1"></i>
+                                <span id="rateLimitMessage">Rate limit active - please slow down</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden z-50">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toastMessage">Setting updated successfully!</span>
+        </div>
+    </div>
+
+    <script>
+        // Helper function for category icons
+        function getCategoryIcon(category) {
+            const icons = {
+                'identity': 'fas fa-id-card',
+                'contact': 'fas fa-envelope',
+                'social': 'fab fa-facebook',
+                'homepage': 'fas fa-home',
+                'about': 'fas fa-info-circle',
+                'footer': 'fas fa-grip-lines',
+                'seo': 'fas fa-search',
+                'business': 'fas fa-building'
+            };
+            return icons[category] || 'fas fa-cog';
+        }
+
+        // Tab switching
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Update tab appearance
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('border-blue-600', 'text-blue-600');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                });
+                this.classList.add('border-blue-600', 'text-blue-600');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Show/hide content
+                document.querySelectorAll('.category-content').forEach(content => {
+                    if (content.dataset.category === category) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Save individual setting with debounce
+        document.querySelectorAll('.save-setting-btn').forEach(btn => {
+            let isProcessing = false;
+            
+            btn.addEventListener('click', async function() {
+                if (isProcessing) return; // Prevent double-clicks
+                
+                const settingKey = this.dataset.setting;
+                const input = document.querySelector(`input[type="url"][data-setting="${settingKey}"], input[type="text"][data-setting="${settingKey}"], textarea[data-setting="${settingKey}"]`);
+                const fileInput = document.querySelector(`input[type="file"].image-upload-input[data-setting="${settingKey}"]`);
+                
+                // Check if this is an image setting with a file upload
+                const isImageSetting = fileInput && fileInput.files && fileInput.files[0];
+                
+                console.log('🔧 Save button clicked for:', settingKey);
+                console.log('📄 Text input:', input);
+                console.log('📁 File input:', fileInput);
+                console.log('🖼️ Is image setting:', isImageSetting);
+                
+                try {
+                    isProcessing = true;
+                    this.disabled = true;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+                    
+                    let response;
+                    
+                    if (isImageSetting) {
+                        // Handle file upload for image settings
+                        console.log('🖼️ Image setting detected, uploading file...');
+                        const formData = new FormData();
+                        
+                        if (settingKey === 'site_logo') {
+                            console.log('📤 Uploading logo file:', fileInput.files[0]);
+                            formData.append('logo', fileInput.files[0]);
+                            response = await fetch('/admin/settings/upload-logo', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            console.log('📡 Upload response status:', response.status);
+                        } else {
+                            // For other image settings, use regular text update
+                            response = await fetch('/admin/settings/update', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ setting_key: settingKey, value: input.value })
+                            });
+                        }
+                    } else {
+                        // Regular text-based setting update
+                        const value = input.value;
+                        console.log('📤 Sending JSON data:', { setting_key: settingKey, value: value });
+                        
+                        const jsonData = JSON.stringify({ setting_key: settingKey, value: value });
+                        console.log('📤 Stringified JSON:', jsonData);
+                        
+                        response = await fetch('/admin/settings/update', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: jsonData
+                        });
+                    }
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showToast('Setting updated successfully!', 'success');
+                        input.style.borderColor = '#10B981';
+                        setTimeout(() => { input.style.borderColor = ''; }, 2000);
+                        
+                        // Update the text input with the new path if it was a file upload
+                        if (isImageSetting && result.logoPath) {
+                            input.value = result.logoPath;
+                            // Clear the file input
+                            fileInput.value = '';
+                            // Refresh page to show new image
+                            setTimeout(() => location.reload(), 1000);
+                        }
+                    } else if (response.status === 429) {
+                        showToast('Too many requests. Please wait and try again.', 'error');
+                        showRateLimit(true, 'Rate limit reached - please wait before saving again');
+                    } else {
+                        showToast(result.error || result.message || 'Failed to update setting', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error updating setting:', error);
+                    showToast('Failed to update setting', 'error');
+                } finally {
+                    isProcessing = false;
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-save mr-2"></i>Save';
+                }
+            });
+        });
+
+        // Save all changes
+        document.getElementById('saveAllBtn').addEventListener('click', async function() {
+            const inputs = document.querySelectorAll('[data-setting]');
+            const updates = Array.from(inputs).map(input => ({
+                setting_key: input.dataset.setting,
+                value: input.value
+            }));
+            
+            try {
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving All...';
+                
+                const promises = updates.map(update => 
+                    fetch('/admin/settings/update', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(update)
+                    })
+                );
+                
+                await Promise.all(promises);
+                showToast('All settings updated successfully!', 'success');
+            } catch (error) {
+                console.error('Error updating settings:', error);
+                showToast('Failed to update some settings', 'error');
+            } finally {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-save mr-2"></i>Save All Changes';
+            }
+        });
+
+        // Auto-save functionality with rate limiting
+        let saveTimeouts = {};
+        let lastSaveTime = {};
+        const MIN_SAVE_INTERVAL = 3000; // Minimum 3 seconds between saves for same field
+        
+        document.querySelectorAll('[data-setting]').forEach(input => {
+            input.addEventListener('input', function() {
+                const settingKey = this.dataset.setting;
+                const now = Date.now();
+                
+                // Clear existing timeout
+                if (saveTimeouts[settingKey]) {
+                    clearTimeout(saveTimeouts[settingKey]);
+                }
+                
+                // Check if we need to wait longer
+                const timeSinceLastSave = now - (lastSaveTime[settingKey] || 0);
+                const delay = Math.max(5000, MIN_SAVE_INTERVAL - timeSinceLastSave); // At least 5 seconds delay
+                
+                saveTimeouts[settingKey] = setTimeout(async () => {
+                    try {
+                        lastSaveTime[settingKey] = Date.now();
+                        
+                        const response = await fetch('/admin/settings/update', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                setting_key: settingKey,
+                                value: this.value
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            this.style.borderColor = '#10B981';
+                            setTimeout(() => { this.style.borderColor = ''; }, 1000);
+                        } else if (response.status === 429) {
+                            // Rate limited
+                            this.style.borderColor = '#F59E0B';
+                            setTimeout(() => { this.style.borderColor = ''; }, 2000);
+                            showRateLimit(true, 'Auto-save rate limited - use manual save buttons');
+                        }
+                    } catch (error) {
+                        console.error('Auto-save error:', error);
+                        this.style.borderColor = '#EF4444';
+                        setTimeout(() => { this.style.borderColor = ''; }, 2000);
+                    }
+                }, delay);
+            });
+        });
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } text-white`;
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        }
+
+        // Show rate limit status
+        function showRateLimit(show = true, message = 'Rate limit active - please slow down') {
+            const status = document.getElementById('rateLimitStatus');
+            const messageEl = document.getElementById('rateLimitMessage');
+            
+            if (show) {
+                messageEl.textContent = message;
+                status.classList.remove('hidden');
+                setTimeout(() => {
+                    status.classList.add('hidden');
+                }, 10000); // Hide after 10 seconds
+            } else {
+                status.classList.add('hidden');
+            }
+        }
+
+        // Refresh data
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            window.location.reload();
+        });
+    </script>
+
+    <%
+        // Helper function for category icons (server-side)
+        function getCategoryIcon(category) {
+            const icons = {
+                'identity': 'fas fa-id-card',
+                'contact': 'fas fa-envelope',
+                'social': 'fab fa-facebook',
+                'homepage': 'fas fa-home',
+                'about': 'fas fa-info-circle',
+                'footer': 'fas fa-grip-lines',
+                'seo': 'fas fa-search',
+                'business': 'fas fa-building'
+            };
+            return icons[category] || 'fas fa-cog';
+        }
+    %>
+</body>
+</html>

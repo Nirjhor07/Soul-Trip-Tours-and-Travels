@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= settings.seo_title || 'Soul Trip Tours and Travels - Discover Amazing Adventures' %></title>
+    <meta
+      name="description"
+      content="<%= settings.seo_description || 'Soul Trip Tours and Travels - Discover amazing destinations with our expertly crafted travel packages and adventures around the world.' %>"
+    />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-screen bg-cover bg-center"
+      style="
+        background-image: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.3)
+          ),
+          url('<%= settings.hero_background_image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2835&q=80' %>');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+      ></div>
+      <div class="relative container-custom h-full flex items-center">
+        <div class="text-white max-w-3xl animate-fade-in-up">
+          <h1 class="text-5xl lg:text-7xl font-bold mb-6 text-shadow-lg">
+            <%= settings.hero_title || 'Travel Your' %>
+            <span
+              class="gradient-text bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent"
+              ><%= settings.hero_title_highlight || 'Heart Out' %></span
+            >
+          </h1>
+          <p class="text-xl lg:text-2xl mb-8 text-gray-200 text-shadow">
+            <%= settings.hero_subtitle || 'Small group adventures that bring the world closer.' %>
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/tours" class="btn-primary text-lg px-8 py-4"
+              ><%= settings.hero_cta_primary || 'Explore Tours' %></a
+            >
+            <a href="/about" class="btn-secondary text-lg px-8 py-4"
+              >Learn More</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div
+        class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+      >
+        <i class="fas fa-chevron-down text-white text-2xl"></i>
+      </div>
+    </section>
+
+    <!-- Popular Tours Section -->
+    <section class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Popular Tours
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Loved by travelers, powered by heart. Discover our most sought-after
+            adventures.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% tours.forEach(tour => { %>
+          <div class="card overflow-hidden group">
+            <div class="relative h-64 overflow-hidden">
+              <img
+                src="<%= tour.image.startsWith('http') ? tour.image : (tour.image.startsWith('/') ? tour.image : '/images/' + tour.image) %>"
+                alt="<%= tour.title %>"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div class="absolute top-4 left-4">
+                <span
+                  class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  <%= tour.category %>
+                </span>
+              </div>
+              <div class="absolute top-4 right-4">
+                <span
+                  class="bg-white text-gray-900 px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  <%= tour.duration %>
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3
+                class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-200"
+              >
+                <%= tour.title %>
+              </h3>
+              <p class="text-gray-600 mb-4"><%= tour.description %></p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center text-gray-500">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span><%= tour.route %></span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-2xl font-bold text-primary-600"
+                    >$<%= tour.price %></span
+                  >
+                  <span class="text-gray-500"> USD</span>
+                </div>
+                <a href="/tour/<%= tour.id %>" class="btn-primary">View Tour</a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="/tours" class="btn-secondary text-lg px-8 py-4"
+            >View All Tours</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section-padding bg-gray-50">
+      <div class="container-custom">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Why Travel with Soul Trip
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Six reasons you'll love traveling with us
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-user-tie text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Expert Local Guides
+            </h3>
+            <p class="text-gray-600">
+              Our guides have local knowledge, boundless energy, and serious
+              skills to make your trip unforgettable.
+            </p>
+          </div>
+
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-users text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Small Groups, Big Connections
+            </h3>
+            <p class="text-gray-600">
+              Small groups mean meaningful connections with fellow travelers
+              from around the world.
+            </p>
+          </div>
+
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-compass text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Freedom to Explore
+            </h3>
+            <p class="text-gray-600">
+              The safety of a group with the freedom to explore on your own
+              terms.
+            </p>
+          </div>
+
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-heart text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Immersive Experiences
+            </h3>
+            <p class="text-gray-600">
+              Get hands-on with culture, food, and local life. No sidelines,
+              just full-on adventure.
+            </p>
+          </div>
+
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-leaf text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Responsible Travel
+            </h3>
+            <p class="text-gray-600">
+              Travel that helps people, places, and the planet through our
+              sustainable tourism model.
+            </p>
+          </div>
+
+          <div class="text-center group">
+            <div
+              class="w-16 h-16 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-shield-alt text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Book with Confidence
+            </h3>
+            <p class="text-gray-600">
+              Flexible policies, guaranteed departures, and 24/7 support
+              whenever you need it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular Destinations Section -->
+    <section class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Popular Destinations
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Bucket list meets bold discoveries
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div
+            class="relative h-80 rounded-xl overflow-hidden group cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1506905925346-21472746e650?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Himalayas"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-bold">Himalayas</h3>
+              <p class="text-sm">Nepal & Tibet</p>
+            </div>
+          </div>
+
+          <div
+            class="relative h-80 rounded-xl overflow-hidden group cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="African Safari"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-bold">African Safari</h3>
+              <p class="text-sm">Kenya & Tanzania</p>
+            </div>
+          </div>
+
+          <div
+            class="relative h-80 rounded-xl overflow-hidden group cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="India"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-bold">Incredible India</h3>
+              <p class="text-sm">Heritage & Culture</p>
+            </div>
+          </div>
+
+          <div
+            class="relative h-80 rounded-xl overflow-hidden group cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Europe"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-bold">European Classics</h3>
+              <p class="text-sm">Art & Architecture</p>
+            </div>
+          </div>
+
+          <div
+            class="relative h-80 rounded-xl overflow-hidden group cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Amazon"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-xl font-bold">Amazon Rainforest</h3>
+              <p class="text-sm">Wildlife & Nature</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section
+      class="section-padding bg-gradient-to-r from-primary-600 to-accent-500 text-white"
+    >
+      <div class="container-custom text-center">
+        <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+          Ready for Your Next Adventure?
+        </h2>
+        <p class="text-xl mb-8 max-w-2xl mx-auto">
+          Join thousands of travelers who have discovered the world with Soul
+          Trip Tours. Your adventure awaits!
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/tours"
+            class="bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+            >Browse Tours</a
+          >
+          <a
+            href="/contact"
+            class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+            >Get in Touch</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobile-menu-btn")
+        .addEventListener("click", function () {
+          const mobileMenu = document.getElementById("mobile-menu");
+          mobileMenu.classList.toggle("hidden");
+        });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Add scroll effect to header
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 100) {
+          header.classList.add("backdrop-blur-md", "bg-white/90");
+        } else {
+          header.classList.remove("backdrop-blur-md", "bg-white/90");
+        }
+      });
+    </script>
+  </body>
+</html>

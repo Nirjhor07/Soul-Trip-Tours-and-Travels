@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page Management - Admin Panel</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+        .section-content {
+            padding: 1.5rem;
+        }
+        .content-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .content-item-header {
+            background: #f9fafb;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        .content-item-body {
+            padding: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin" class="nav-item">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="/admin/tours" class="nav-item">
+                    <i class="fas fa-map-marked-alt"></i> Tours
+                </a>
+                <a href="/admin/bookings" class="nav-item">
+                    <i class="fas fa-calendar-check"></i> Bookings
+                </a>
+                <a href="/admin/contacts" class="nav-item">
+                    <i class="fas fa-envelope"></i> Contacts
+                </a>
+                <a href="/admin/about" class="nav-item active">
+                    <i class="fas fa-info-circle"></i> About Page
+                </a>
+                <a href="/admin/settings" class="nav-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </nav>
+        </div>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h1><i class="fas fa-info-circle"></i> About Page Management</h1>
+                <p>Manage content, team members, and statistics for the About page</p>
+            </div>
+
+            <!-- Content Sections -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-text-height"></i> Content Sections</h3>
+                </div>
+                <div class="section-content">
+                    <% aboutData.content.forEach(item => { %>
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <strong><%= item.section_title %></strong>
+                            <small class="text-muted">(<%= item.section_key %>)</small>
+                        </div>
+                        <div class="content-item-body">
+                            <form class="content-form" data-id="<%= item.id %>">
+                                <div class="form-group">
+                                    <label>Section Title</label>
+                                    <input type="text" name="section_title" value="<%= item.section_title %>" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea name="content" rows="4" class="form-control"><%= item.content || '' %></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image URL (optional)</label>
+                                    <input type="url" name="image_url" value="<%= item.image_url || '' %>" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Order</label>
+                                    <input type="number" name="order_index" value="<%= item.order_index %>" class="form-control">
+                                </div>
+                                <div class="actions">
+                                    <button type="submit" class="btn btn-primary">Update Content</button>
+                                    <button type="button" class="btn btn-danger delete-content" data-id="<%= item.id %>">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <% }); %>
+                    
+                    <!-- Add New Content Section -->
+                    <div class="content-item">
+                        <div class="content-item-header">
+                            <strong>Add New Content Section</strong>
+                        </div>
+                        <div class="content-item-body">
+                            <form id="addContentForm">
+                                <div class="form-group">
+                                    <label>Section Key</label>
+                                    <input type="text" name="section_key" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Section Title</label>
+                                    <input type="text" name="section_title" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea name="content" rows="4" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image URL (optional)</label>
+                                    <input type="url" name="image_url" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Order</label>
+                                    <input type="number" name="order_index" value="0" class="form-control">
+                                </div>
+                                <div class="actions">
+                                    <button type="submit" class="btn btn-success">Add Content</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Members -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-users"></i> Team Members</h3>
+                </div>
+                <div class="section-content">
+                    <div class="team-grid">
+                        <% aboutData.team.forEach(member => { %>
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong><%= member.name %></strong>
+                                <small class="text-muted"><%= member.position %></small>
+                            </div>
+                            <div class="content-item-body">
+                                <form class="team-form" data-id="<%= member.id %>" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" name="name" value="<%= member.name %>" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Position</label>
+                                        <input type="text" name="position" value="<%= member.position %>" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bio</label>
+                                        <textarea name="bio" rows="3" class="form-control"><%= member.bio || '' %></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Current Image</label>
+                                        <% if (member.image_url) { %>
+                                            <div class="current-image">
+                                                <img src="<%= member.image_url %>" alt="<%= member.name %>" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                                <small class="text-muted d-block">Current image</small>
+                                            </div>
+                                        <% } else { %>
+                                            <small class="text-muted">No image uploaded</small>
+                                        <% } %>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Upload New Image</label>
+                                        <input type="file" name="image" class="form-control" accept="image/*">
+                                        <small class="text-muted">Leave empty to keep current image. Supports: JPG, PNG, GIF, WebP (Max 5MB)</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Or Image URL</label>
+                                        <input type="url" name="image_url" value="<%= member.image_url || '' %>" class="form-control">
+                                        <small class="text-muted">Upload will override URL if both are provided</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="<%= member.order_index %>" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" class="btn btn-danger delete-team" data-id="<%= member.id %>">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <% }); %>
+                        
+                        <!-- Add New Team Member -->
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong>Add New Team Member</strong>
+                            </div>
+                            <div class="content-item-body">
+                                <form id="addTeamForm" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" name="name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Position</label>
+                                        <input type="text" name="position" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bio</label>
+                                        <textarea name="bio" rows="3" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Upload Image</label>
+                                        <input type="file" name="image" class="form-control" accept="image/*">
+                                        <small class="text-muted">Supports: JPG, PNG, GIF, WebP (Max 5MB)</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Or Image URL</label>
+                                        <input type="url" name="image_url" class="form-control">
+                                        <small class="text-muted">Upload will override URL if both are provided</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="0" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-success">Add Team Member</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+                </div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <% aboutData.stats.forEach(stat => { %>
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong><%= stat.stat_value %></strong>
+                                <small class="text-muted"><%= stat.stat_label %></small>
+                            </div>
+                            <div class="content-item-body">
+                                <form class="stats-form" data-id="<%= stat.id %>">
+                                    <div class="form-group">
+                                        <label>Value</label>
+                                        <input type="text" name="stat_value" value="<%= stat.stat_value %>" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Label</label>
+                                        <input type="text" name="stat_label" value="<%= stat.stat_label %>" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="<%= stat.order_index %>" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" class="btn btn-danger delete-stat" data-id="<%= stat.id %>">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <% }); %>
+                        
+                        <!-- Add New Statistic -->
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong>Add New Statistic</strong>
+                            </div>
+                            <div class="content-item-body">
+                                <form id="addStatForm">
+                                    <div class="form-group">
+                                        <label>Key</label>
+                                        <input type="text" name="stat_key" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Value</label>
+                                        <input type="text" name="stat_value" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Label</label>
+                                        <input type="text" name="stat_label" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="0" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-success">Add Statistic</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Management -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-star"></i> Values & Principles</h3>
+                </div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <% aboutData.values.forEach(value => { %>
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong><%= value.title %></strong>
+                                <small class="text-muted"><i class="<%= value.icon %>"></i></small>
+                            </div>
+                            <div class="content-item-body">
+                                <form class="values-form" data-id="<%= value.id %>">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" name="title" value="<%= value.title %>" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea name="description" rows="3" class="form-control"><%= value.description || '' %></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Icon (FontAwesome class)</label>
+                                        <input type="text" name="icon" value="<%= value.icon || '' %>" class="form-control" placeholder="fas fa-star">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="<%= value.order_index %>" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" class="btn btn-danger delete-value" data-id="<%= value.id %>">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <% }); %>
+                        
+                        <!-- Add New Value -->
+                        <div class="content-item">
+                            <div class="content-item-header">
+                                <strong>Add New Value</strong>
+                            </div>
+                            <div class="content-item-body">
+                                <form id="addValueForm">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" name="title" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea name="description" rows="3" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Icon (FontAwesome class)</label>
+                                        <input type="text" name="icon" class="form-control" placeholder="fas fa-star">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Order</label>
+                                        <input type="number" name="order_index" value="0" class="form-control">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="btn btn-success">Add Value</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Content form handling
+        document.querySelectorAll('.content-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = form.dataset.id;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                try {
+                    const response = await fetch(`/admin/about/content/${id}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Content updated successfully!');
+                    } else {
+                        alert('Error updating content: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('Error updating content');
+                }
+            });
+        });
+
+        // Add content form
+        document.getElementById('addContentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/admin/about/content', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Content added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding content: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error adding content');
+            }
+        });
+
+        // Team form handling
+        document.querySelectorAll('.team-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = form.dataset.id;
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch(`/admin/about/team/${id}`, {
+                        method: 'POST',
+                        body: formData // Send FormData directly for file upload
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Team member updated successfully!');
+                        location.reload(); // Reload to show updated image
+                    } else {
+                        alert('Error updating team member: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('Error updating team member');
+                }
+            });
+        });
+
+        // Add team form
+        document.getElementById('addTeamForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch('/admin/about/team', {
+                    method: 'POST',
+                    body: formData // Send FormData directly for file upload
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Team member added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding team member: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error adding team member');
+            }
+        });
+
+        // Stats form handling
+        document.querySelectorAll('.stats-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = form.dataset.id;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                try {
+                    const response = await fetch(`/admin/about/stats/${id}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Statistic updated successfully!');
+                    } else {
+                        alert('Error updating statistic: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('Error updating statistic');
+                }
+            });
+        });
+
+        // Values form handling
+        document.querySelectorAll('.values-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = form.dataset.id;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                try {
+                    const response = await fetch(`/admin/about/values/${id}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Value updated successfully!');
+                    } else {
+                        alert('Error updating value: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('Error updating value');
+                }
+            });
+        });
+
+        // Add stat form
+        document.getElementById('addStatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/admin/about/stats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Statistic added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding statistic: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error adding statistic');
+            }
+        });
+
+        // Add value form
+        document.getElementById('addValueForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/admin/about/values', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Value added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding value: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error adding value');
+            }
+        });
+
+        // Delete handlers
+        document.querySelectorAll('.delete-content').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to delete this content section?')) {
+                    const id = btn.dataset.id;
+                    try {
+                        const response = await fetch(`/admin/about/content/${id}`, { method: 'DELETE' });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Content deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error deleting content: ' + result.message);
+                        }
+                    } catch (error) {
+                        alert('Error deleting content');
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-team').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to delete this team member?')) {
+                    const id = btn.dataset.id;
+                    try {
+                        const response = await fetch(`/admin/about/team/${id}`, { method: 'DELETE' });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Team member deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error deleting team member: ' + result.message);
+                        }
+                    } catch (error) {
+                        alert('Error deleting team member');
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-stat').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to delete this statistic?')) {
+                    const id = btn.dataset.id;
+                    try {
+                        const response = await fetch(`/admin/about/stats/${id}`, { method: 'DELETE' });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Statistic deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error deleting statistic: ' + result.message);
+                        }
+                    } catch (error) {
+                        alert('Error deleting statistic');
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.delete-value').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to delete this value?')) {
+                    const id = btn.dataset.id;
+                    try {
+                        const response = await fetch(`/admin/about/values/${id}`, { method: 'DELETE' });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Value deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error deleting value: ' + result.message);
+                        }
+                    } catch (error) {
+                        alert('Error deleting value');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
