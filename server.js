@@ -486,15 +486,11 @@ app.put('/api/admin/tours/:id', requireAuth, async (req, res) => {
 app.delete('/api/admin/tours/:id', requireAuth, async (req, res) => {
   try {
     const tourId = req.params.id;
-    console.log(`🗑️  Delete tour request received for ID: ${tourId}`);
     
     // Check if there are any bookings for this tour
-    console.log('📋 Checking for existing bookings...');
     const [bookings] = await getDB().execute('SELECT COUNT(*) as count FROM bookings WHERE tour_id = ?', [tourId]);
-    console.log(`📊 Found ${bookings[0].count} bookings for tour ${tourId}`);
     
     if (bookings[0].count > 0) {
-      console.log(`❌ Cannot delete tour ${tourId} - has ${bookings[0].count} bookings`);
       return res.status(400).json({ 
         success: false, 
         error: `Cannot delete tour. There are ${bookings[0].count} booking(s) associated with this tour.`,
@@ -503,23 +499,18 @@ app.delete('/api/admin/tours/:id', requireAuth, async (req, res) => {
     }
     
     // Delete related data first (in correct order to respect foreign key constraints)
-    console.log('🧹 Cleaning up related data...');
     await getDB().execute('DELETE FROM tour_highlights WHERE tour_id = ?', [tourId]);
     await getDB().execute('DELETE FROM tour_gallery WHERE tour_id = ?', [tourId]);
     await getDB().execute('DELETE FROM tour_itinerary WHERE tour_id = ?', [tourId]);
     await getDB().execute('DELETE FROM tour_pricing WHERE tour_id = ?', [tourId]);
     
     // Finally delete the tour
-    console.log(`🎯 Deleting tour ${tourId}...`);
     const [result] = await getDB().execute('DELETE FROM tours WHERE id = ?', [tourId]);
-    console.log(`📈 Deletion result: ${JSON.stringify(result)}`);
     
     if (result.affectedRows === 0) {
-      console.log(`❌ Tour ${tourId} not found`);
       return res.status(404).json({ success: false, error: 'Tour not found' });
     }
     
-    console.log(`✅ Tour ${tourId} deleted successfully`);
     res.json({ success: true, message: 'Tour deleted successfully' });
   } catch (error) {
     console.error('❌ Error deleting tour:', error);
@@ -690,9 +681,7 @@ app.put('/api/admin/contacts/:id', requireAuth, async (req, res) => {
 // Settings Management Route
 app.get('/admin/settings', requireAuth, async (req, res) => {
     try {
-        console.log('Fetching settings...');
         const settings = await settingsService.getAllSettings();
-        console.log('Settings fetched:', settings.length, 'items');
         
         const categories = ['identity', 'contact', 'social', 'homepage', 'about', 'footer', 'seo', 'business'];
         res.render('admin-settings', { 
@@ -711,17 +700,9 @@ app.get('/admin/settings', requireAuth, async (req, res) => {
 
 app.post('/admin/settings/update', requireAuth, adminSettingsLimiter, async (req, res) => {
     try {
-        console.log('📥 Settings update request received');
-        console.log('Headers:', req.headers);
-        console.log('Body:', req.body);
-        console.log('Raw body type:', typeof req.body);
-        
         const { setting_key, value } = req.body;
         
-        console.log('📋 Extracted:', { setting_key, value });
-        
         if (!setting_key || value === undefined) {
-            console.log('❌ Missing required fields');
             return res.status(400).json({ 
                 success: false, 
                 error: 'Setting key and value are required' 
@@ -729,7 +710,6 @@ app.post('/admin/settings/update', requireAuth, adminSettingsLimiter, async (req
         }
 
         const updated = await settingsService.updateSetting(setting_key, value);
-        console.log('✅ Database update result:', updated);
         
         if (updated) {
             res.json({ 
@@ -768,22 +748,15 @@ app.get('/admin/settings/category/:category', requireAuth, async (req, res) => {
 // Logo upload route
 app.post('/admin/settings/upload-logo', requireAuth, adminSettingsLimiter, uploadLogo.single('logo'), async (req, res) => {
     try {
-        console.log('📤 Logo upload request received');
-        console.log('File:', req.file);
-        console.log('Body:', req.body);
-        
         if (!req.file) {
-            console.log('❌ No file uploaded');
             return res.status(400).json({ success: false, message: 'No logo file uploaded' });
         }
 
         // Generate the logo path
         const logoPath = `/uploads/logos/${req.file.filename}`;
-        console.log('📁 Generated logo path:', logoPath);
         
         // Update the site_logo setting in the database
         await settingsService.updateSetting('site_logo', logoPath);
-        console.log('✅ Database updated successfully');
         
         res.json({ 
             success: true, 
