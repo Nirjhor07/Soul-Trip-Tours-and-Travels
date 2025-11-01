@@ -20,7 +20,7 @@
     <!-- Hero Section -->
     <section
       class="relative h-96 bg-cover bg-center"
-      style="background-image: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('<%= tour.image.startsWith('http') ? tour.image : (tour.image.startsWith('/') ? tour.image : '/images/' + tour.image) %>')"
+      style="background-image: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('<%= tour.image.startsWith("http") ? tour.image : (tour.image.startsWith("/") ? tour.image : "/images/" + tour.image) %>')"
     >
       <div
         class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"
